@@ -1,0 +1,53 @@
+vars:
+  FirstTwoOctets: '10.100'
+
+stacks:
+
+  - stackname: 'cfn-lambdahelper-natgateway'
+    template: lambda.template
+    Capabilities: CAPABILITY_IAM
+    vars:
+      bucket: my-bucket
+      key: 'lambda/nat_gateway.zip'
+    parameters:
+      S3Bucket: '{var:bucket}'
+      S3Key: '{var:key}'
+    before:
+    # This will be executed before the stack is being deployed. Here we're zipping everthing up and
+    # upload it to an S3 bucket. This is what we're configuring in the Lambda function as origin for the source code
+    - cd function
+    - npm install aws-sdk
+    - zip -r nat_gateway.zip nat_gateway.js node_modules/
+    - aws s3 cp nat_gateway.zip s3://{var:bucket}/{var:key}
+
+
+
+  - stackname: vpc-stack
+    template: vpc.template
+    parameters:
+      VpcCidrBlock: '{var:FirstTwoOctets}.0.0/16'
+      VpcName: 'vpc-int'
+
+
+
+  - stackname: subnets-stack
+    description: 'Subnets'
+    template:
+      # The following keys (e.g. B, C, D) will be used a prefixes for all resources/parameters/... in the referenced template
+      B: az.template
+      C: az.template
+      D: az.template
+    parameters:
+      # '*...' is will be expanded to every prefix used in the template section -> BVPC, CVPC, DVPC
+      '*VPC': '{output:vpc-stack:VPC}'
+      '*InternetGateway': '{output:vpc-stack:InternetGateway}'
+      '*CustomResourceFunctionArn': '{output:cfn-lambdahelper-natgateway:NatGatewayManagerArn}'
+      BPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.1.0/24'
+      CPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.2.0/24'
+      DPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.3.0/24'
+      BPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.11.0/24'
+      CPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.12.0/24'
+      DPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.13.0/24'
+      BAZ: 'us-east-1b'
+      CAZ: 'us-east-1c'
+      DAZ: 'us-east-1d'
