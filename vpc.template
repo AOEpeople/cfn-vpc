@@ -1,6 +1,6 @@
 {
   "AWSTemplateFormatVersion": "2010-09-09",
-  "Description": "VPC setup",
+  "Description": "VPC setup (without subnets)",
   "Parameters": {
     "VpcName": {
       "Description" : "Name for the VPC",

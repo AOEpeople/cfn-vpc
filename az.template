@@ -2,9 +2,6 @@
   "AWSTemplateFormatVersion": "2010-09-09",
   "Description": "VPC setup",
   "Parameters": {
-    "CustomResourceFunctionArn": {
-      "Type": "String"
-    },
     "AZ": {
       "Type": "AWS::EC2::AvailabilityZone::Name"
     },
@@ -42,9 +39,8 @@
       }
     },
     "NatGateway": {
-      "Type": "Custom::NatGateway",
+      "Type": "AWS::EC2::NatGateway",
       "Properties": {
-        "ServiceToken": { "Ref": "CustomResourceFunctionArn" },
         "SubnetId": { "Ref": "PublicSubnet"},
         "AllocationId": { "Fn::GetAtt": ["NatIP", "AllocationId"] }
       }
@@ -81,16 +77,11 @@
       }
     },
     "NatRoute": {
-      "Type": "Custom::NatGatewayRoute",
-      "DependsOn": [
-        "NatGateway",
-        "AssociateRouteTableWithPublicSubnet"
-      ],
-      "Properties": {
-        "ServiceToken": { "Ref": "CustomResourceFunctionArn" },
-        "RouteTableId": {"Ref": "PrivateSubnetsRouteTable"},
-        "DestinationCidrBlock": "0.0.0.0/0",
-        "NatGatewayId": {"Ref": "NatGateway"}
+      "Type" : "AWS::EC2::Route",
+      "Properties" : {
+        "DestinationCidrBlock" : "0.0.0.0/0",
+        "NatGatewayId" : {"Ref": "NatGateway"},
+        "RouteTableId" : {"Ref": "PrivateSubnetsRouteTable"}
       }
     },
     "AssociateRouteTableWithPublicSubnet": {
