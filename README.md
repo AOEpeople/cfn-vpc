@@ -15,4 +15,4 @@ This concept of setting up a VPC consists of two parts:
 and a private subnet including all routes (+ tables + associations) and a NAT Gateway (+ Elastic IP)
 Using a separate template for every AZ allows you to keep the code DRY. [StackFormation](https://github.com/AOEpeople/StackFormation)' s
 prefixed template merging feature helps you to combine all the AZ templates into one and deploy them as a single CloudFormation template.
-Check [blueprint.example.yml](blueprint.example.yml) for an example.
+Check [blueprints.example.yml](blueprints.example.yml) for an example.
