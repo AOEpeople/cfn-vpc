@@ -1,7 +1,7 @@
 vars:
   FirstTwoOctets: '10.100'
 
-stacks:
+blueprints:
 
   - stackname: vpc-stack
     template: vpc.template
