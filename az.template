@@ -35,7 +35,7 @@
         "AvailabilityZone": { "Ref": "AZ" },
         "CidrBlock": { "Ref": "PublicSubnetCidrBlock" },
         "VpcId": {"Ref": "VPC"},
-        "Tags": [ {"Key": "Name","Value": {"Fn::Join": [" ", ["Public Subnet", {"Ref": "AZ"}]]}}]
+        "Tags": [ {"Key": "Name","Value": "Public Subnet {Ref:AZ}"}]
       }
     },
     "NatGateway": {
@@ -51,21 +51,21 @@
         "AvailabilityZone": { "Ref": "AZ" },
         "CidrBlock": { "Ref": "PrivateSubnetCidrBlock" },
         "VpcId": {"Ref": "VPC"},
-        "Tags": [ {"Key": "Name","Value": {"Fn::Join": [" ", ["Private Subnet", {"Ref": "AZ"}]]}}]
+        "Tags": [ {"Key": "Name","Value": "Private Subnet {Ref:AZ}"}]
       }
     },
     "PublicSubnetsRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": { "Ref": "VPC" },
-        "Tags": [ {"Key": "Name","Value": {"Fn::Join": ["_", ["public", { "Ref": "VPC" }, {"Ref": "AZ"}]]}}]
+        "Tags": [ {"Key": "Name","Value": "public_{Ref:VPC}_{Ref:AZ}"}]
       }
     },
     "PrivateSubnetsRouteTable": {
       "Type": "AWS::EC2::RouteTable",
       "Properties": {
         "VpcId": {"Ref": "VPC"},
-        "Tags": [ {"Key": "Name","Value": {"Fn::Join": ["_", ["private", { "Ref": "VPC" }, {"Ref": "AZ"}]]}}]
+        "Tags": [ {"Key": "Name","Value": "private_{Ref:VPC}_{Ref:AZ}"}]
       }
     },
     "InternetRoute": {

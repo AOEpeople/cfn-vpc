@@ -24,7 +24,7 @@
     "InternetGateway": {
       "Type": "AWS::EC2::InternetGateway",
       "Properties": {
-        "Tags": [{"Key": "Name", "Value": {"Fn::Join": [" ", ["IGW for ", {"Ref": "VpcName"}]]}}]
+        "Tags": [{"Key": "Name", "Value": "IGW for  {Ref:VpcName}"}]
       }
     },
     "InternetGatewayAttachement": {
