@@ -3,29 +3,31 @@ vars:
 
 blueprints:
 
-  - stackname: vpc-stack
-    template: vpc.template
+  - stackname: 'vpc-stack'
+    template: 'vpc.template'
     parameters:
       VpcCidrBlock: '{var:FirstTwoOctets}.0.0/16'
       VpcName: 'vpc-int'
 
-  - stackname: subnets-stack
+
+
+  - stackname: 'subnets-stack'
     description: 'Subnets'
     template:
-      # The following keys (e.g. B, C, D) will be used a prefixes for all resources/parameters/... in the referenced template
-      B: az.template
-      C: az.template
-      D: az.template
+      # The following keys (e.g. First, Second, Third) will be used a prefixes for all resources/parameters/... in the referenced template
+      First: 'az.template'
+      Second: 'az.template'
+      Third: 'az.template'
     parameters:
-      # '*...' is will be expanded to every prefix used in the template section -> BVPC, CVPC, DVPC
+      # '*...' is will be expanded to every prefix used in the template section -> FirstVPC, SecondVPC, ThirdVPC
       '*VPC': '{output:vpc-stack:VPC}'
       '*InternetGateway': '{output:vpc-stack:InternetGateway}'
-      BPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.1.0/24'
-      CPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.2.0/24'
-      DPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.3.0/24'
-      BPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.11.0/24'
-      CPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.12.0/24'
-      DPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.13.0/24'
-      BAZ: 'us-east-1b'
-      CAZ: 'us-east-1c'
-      DAZ: 'us-east-1d'
+      FirstPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.1.0/24'
+      SecondPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.2.0/24'
+      ThirdPublicSubnetCidrBlock:  '{var:FirstTwoOctets}.3.0/24'
+      FirstPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.11.0/24'
+      SecondPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.12.0/24'
+      ThirdPrivateSubnetCidrBlock: '{var:FirstTwoOctets}.13.0/24'
+      FirstAZ: 'us-east-1b'
+      SecondAZ: 'us-east-1c'
+      ThirdAZ: 'us-east-1d'
