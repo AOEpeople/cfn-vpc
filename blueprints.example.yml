@@ -31,3 +31,14 @@ blueprints:
       FirstAZ: 'us-east-1b'
       SecondAZ: 'us-east-1c'
       ThirdAZ: 'us-east-1d'
+
+
+
+  - stackname: 'bastion'
+    template: 'bastion.template'
+    parameters:
+      PublicSubnets: '{output:subnets-stack:FirstPublicSubnet},{output:subnets-stack:SecondPublicSubnet},{output:subnets-stack:ThirdPublicSubnet}'
+      KeyPair: '{var:KeyName}'
+      Vpc: '{output:vpc-stack:VPC}'
+      EnvironmentName: 'all'
+      SSHLocation: '{env:SSHLocation:0.0.0.0/0}'
