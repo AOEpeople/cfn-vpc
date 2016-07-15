@@ -18,12 +18,6 @@
     }
   },
   "Resources": {
-    "NatIP": {
-      "Type": "AWS::EC2::EIP",
-      "Properties": {
-        "Domain": "vpc"
-      }
-    },
     "PublicSubnet": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
@@ -31,13 +25,6 @@
         "CidrBlock": { "Ref": "PublicSubnetCidrBlock" },
         "VpcId": {"Ref": "VPC"},
         "Tags": [ {"Key": "Name","Value": "Public Subnet {Ref:AZ}"}]
-      }
-    },
-    "NatGateway": {
-      "Type": "AWS::EC2::NatGateway",
-      "Properties": {
-        "SubnetId": { "Ref": "PublicSubnet"},
-        "AllocationId": { "Fn::GetAtt": ["NatIP", "AllocationId"] }
       }
     },
     "PublicSubnetsRouteTable": {
@@ -66,9 +53,6 @@
   "Outputs": {
     "PublicSubnet": {
       "Value": { "Ref": "PublicSubnet" }
-    },
-    "NatIP": {
-      "Value": { "Ref": "NatIP" }
     }
   }
 }
